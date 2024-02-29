@@ -3,6 +3,9 @@ import mysql.connector
 from mysql.connector import errorcode
 import os
 from tkinter import *
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def taking_password():
@@ -52,23 +55,12 @@ def entering_password():
 
 
 def inserting_data(self):
-    # pword = taking_password()
-    # # pword = "new_password"
-    # while True:
-    # 	try:
-    # 		print("32", pword)
-    # 		mydb = mysql.connector.connect(host = "localhost", user = "root", password = "new_password")	#we'll have to adjust this according to the MySQL password for the system.
-    # 		break
-    # 	except:
-    # 		messagebox.showerror("Incorrect Password", "Incorrect MySQL password. Try again.")
-    # 		os.remove(os.path.dirname(os.path.realpath(__file__))+"/MySQL_password.txt")
-    # 		taking_password()
     try:
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="new_password",
-            database="Attendance_System",
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB_NAME"),
         )
 
     except mysql.connector.Error as err:
@@ -81,11 +73,7 @@ def inserting_data(self):
 
     my_cursor = mydb.cursor()
 
-    # creating the database if it doesn't already exist:
-    my_cursor.execute("create database if not exists Attendance_System")
-    mydb.commit()
-    # creating the table then inserting values:
-    my_cursor.execute("use Attendance_System")
+    my_cursor.execute("use {}".format(os.getenv("DB_NAME")))
     add_data = (
         "INSERT INTO new_student_info "
         "(Stream, Grade, Section, Year, Student_id, Name, Roll_No, Gender, Email, Phone, DOB, Photo_Sample) "
@@ -115,18 +103,6 @@ def inserting_data(self):
     #     "Constant",  # Placeholder for the constant phone number
     #     self.date_entry.get(), self.photo_sample.get())
     my_cursor.execute(add_data, data)
-    # my_cursor.execute("""create table if not exists new_student_info(Stream char(15),
-    # 											Grade int,
-    # 											Section char(1),
-    # 											Year char(15),
-    # 											Student_id int unique,
-    # 											Name char(15),
-    # 											Roll_No int,
-    # 											Gender char(10),
-    # 											Email char(50),
-    # 											Phone char(15),
-    # 											DOB char(15),
-    # 											Photo_Sample char(3))""")
     mydb.commit()
 
     # my_cursor.execute("insert into new_student_info values ('{}', {}, '{}', '{}', {}, '{}', {}, '{}', '{}', '{}', '{}')".format(
@@ -151,12 +127,11 @@ def inserting_data(self):
 def fetching_data(
     self,
 ):  # i've put the data in the list, "info" but it still has to go into the table using tkinter.
-    pword = "new_password"
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="user",
-        password="new_password",
-        database="Attendance_System",
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
     )
     my_cursor = mydb.cursor()
     my_cursor.execute("select * from new_student_info")
@@ -169,10 +144,10 @@ def fetching_data(
 
 def deleting_data(self):
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="new_password",
-        database="Attendance_System",
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
     )
     my_cursor = mydb.cursor()
     my_cursor.execute(
@@ -187,10 +162,10 @@ def deleting_data(self):
 
 def searching_data(self, search_field, search_val):
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="new_password",
-        database="Attendance_System",
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
     )
     my_cursor = mydb.cursor()
     if search_field == "Name":
@@ -210,10 +185,10 @@ def searching_data(self, search_field, search_val):
 
 def completing_data(self, search_val):
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="new_password",
-        database="Attendance_System",
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
     )
     my_cursor = mydb.cursor()
     my_cursor.execute(

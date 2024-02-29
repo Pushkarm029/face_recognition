@@ -2,14 +2,20 @@ services:
   db:
     image: mysql:8.3.0
     environment:
-      MYSQL_ROOT_PASSWORD: new_password
-      MYSQL_DATABASE: Attendance_System
-      MYSQL_PASSWORD: new_password
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: attendance_db
+      MYSQL_ROOT_PASSWORD: password
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 1s
       retries: 10
       start_period: 30s
       timeout: 5s
+    volumes:
+      - db_data:/var/lib/mysql
     ports:
       - 3306:3306
+
+volumes:
+  db_data:
