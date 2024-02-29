@@ -1,12 +1,18 @@
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 def display_columns(database_name, table_name):
     try:
         # Replace "new_password" with your actual MySQL password
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="new_password",
-            database=database_name
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=database_name,
         )
 
         # Creating a cursor object to interact with the database
@@ -52,10 +58,10 @@ def insert_data(database_name, table_name, data):
     try:
         # Replace "new_password" with your actual MySQL password
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="new_password",
-            database=database_name
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=database_name,
         )
 
         # Creating a cursor object to interact with the database
@@ -63,9 +69,7 @@ def insert_data(database_name, table_name, data):
 
         # Prepare the SQL query for data insertion
         query = "INSERT INTO {} ({}) VALUES ({})".format(
-            table_name,
-            ', '.join(data.keys()),
-            ', '.join(["%s"] * len(data))
+            table_name, ", ".join(data.keys()), ", ".join(["%s"] * len(data))
         )
 
         # Execute the query with the provided data
@@ -85,24 +89,24 @@ def insert_data(database_name, table_name, data):
 
 
 # Specify the database name and table name you want to display columns for
-database_name = "Attendance_System"
+database_name = os.getenv("DB_NAME")
 table_name = "student_info"  # Replace with your actual table name
 
 # Call the function to display columns in the specified table
 display_columns(database_name, table_name)
 data_to_insert = {
-    'Stream': 'Engineering',
-    'Grade': 10,
-    'Section': 'A',
-    'Year': '2024',
-    'Student_id': 1,
-    'Name': 'John Doe',
-    'Roll_No': 101,
-    'Gender': 'Male',
-    'Email': 'john.doe@example.com',
-    'Phone': '123-456-7890',
-    'DOB': '2000-01-01',
-    'Photo_Sample': 'Yes'
+    "Stream": "Engineering",
+    "Grade": 10,
+    "Section": "A",
+    "Year": "2024",
+    "Student_id": 1,
+    "Name": "John Doe",
+    "Roll_No": 101,
+    "Gender": "Male",
+    "Email": "john.doe@example.com",
+    "Phone": "123-456-7890",
+    "DOB": "2000-01-01",
+    "Photo_Sample": "Yes",
 }
 
 # Call the function to insert data into the specified table

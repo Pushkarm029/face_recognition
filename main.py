@@ -5,6 +5,8 @@ from attendance import Attendance
 from student import Student
 from compProject_FaceRecognition import *
 import numpy as np
+import mysql.connector
+from dotenv import load_dotenv
 
 
 class Face_Recognition_System:
@@ -172,6 +174,29 @@ class Face_Recognition_System:
 
 
 if __name__ == "__main__":
+    load_dotenv()
+    mydb = mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
+    )
+    my_cursor = mydb.cursor()
+    my_cursor.execute(
+        """create table if not exists new_student_info(Stream char(15),
+    											Grade int,
+    											Section char(1),
+    											Year char(15),
+    											Student_id int unique,
+    											Name char(15),
+    											Roll_No int,
+    											Gender char(10),
+    											Email char(50),
+    											Phone char(15),
+    											DOB char(15),
+    											Photo_Sample char(3))"""
+    )
+    mydb.commit()
     master = Tk()
     obj = Face_Recognition_System(master)
     master.mainloop()

@@ -8,6 +8,9 @@ import PIL.Image, PIL.ImageTk
 from compProject_FaceRecognition import *
 from compProject_MySQL import *
 import sys
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Student:
